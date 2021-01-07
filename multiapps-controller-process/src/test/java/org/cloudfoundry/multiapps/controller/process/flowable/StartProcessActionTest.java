@@ -20,6 +20,6 @@ class StartProcessActionTest extends ProcessActionTest {
 
     @Override
     protected ProcessAction createProcessAction() {
-        return new StartProcessAction(flowableFacade, Collections.emptyList(), cloudControllerClientProvider);
+        return new StartProcessAction(flowableFacade, Collections.emptyList(), cloudControllerClientProvider, operationService);
     }
 }

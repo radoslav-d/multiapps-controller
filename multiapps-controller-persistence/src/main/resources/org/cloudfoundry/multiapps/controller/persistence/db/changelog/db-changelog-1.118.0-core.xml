@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        logicalFilePath="org/cloudfoundry/multiapps/controller/core/db/changelog/db-changelog-1.118.0-core.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="sap.com" id="alter_operation_table_drop_final_state_column">
+        <dropColumn tableName="operation">
+            <column name="final_state"/>
+        </dropColumn>
+    </changeSet>
+
+</databaseChangeLog>

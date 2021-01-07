@@ -33,6 +33,6 @@ class ResumeProcessActionTest extends ProcessActionTest {
 
     @Override
     protected ProcessAction createProcessAction() {
-        return new ResumeProcessAction(flowableFacade, Collections.emptyList(), cloudControllerClientProvider);
+        return new ResumeProcessAction(flowableFacade, Collections.emptyList(), cloudControllerClientProvider, operationService);
     }
 }

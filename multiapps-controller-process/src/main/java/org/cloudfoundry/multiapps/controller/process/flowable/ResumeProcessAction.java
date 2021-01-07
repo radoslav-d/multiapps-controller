@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.cloudfoundry.multiapps.controller.api.model.ImmutableOperation;
+import org.cloudfoundry.multiapps.controller.api.model.Operation;
 import org.cloudfoundry.multiapps.controller.core.cf.CloudControllerClientProvider;
+import org.cloudfoundry.multiapps.controller.persistence.services.OperationService;
 import org.cloudfoundry.multiapps.controller.process.variables.Variables;
 import org.flowable.engine.runtime.Execution;
 import org.slf4j.Logger;
@@ -21,8 +24,8 @@ public class ResumeProcessAction extends ProcessAction {
 
     @Inject
     public ResumeProcessAction(FlowableFacade flowableFacade, List<AdditionalProcessAction> additionalProcessActions,
-                               CloudControllerClientProvider cloudControllerClientProvider) {
-        super(flowableFacade, additionalProcessActions, cloudControllerClientProvider);
+                               CloudControllerClientProvider cloudControllerClientProvider, OperationService operationService) {
+        super(flowableFacade, additionalProcessActions, cloudControllerClientProvider, operationService);
     }
 
     @Override
@@ -37,6 +40,7 @@ public class ResumeProcessAction extends ProcessAction {
         for (String processAtReceiveTask : processesAtReceiveTask) {
             triggerProcessInstance(user, processAtReceiveTask);
         }
+        updateOperationState(superProcessInstanceId, Operation.State.RUNNING);
     }
 
     private void triggerProcessInstance(String user, String processId) {

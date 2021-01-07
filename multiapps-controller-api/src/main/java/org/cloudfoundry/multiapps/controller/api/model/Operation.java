@@ -1,5 +1,6 @@
 package org.cloudfoundry.multiapps.controller.api.model;
 
+import java.text.MessageFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public abstract class Operation implements AuditableConfiguration {
 
         RUNNING, FINISHED, ERROR, ABORTED, ACTION_REQUIRED;
 
+        public boolean isFinal() {
+            return getFinalStates().contains(this);
+        }
+
         public static State fromValue(String v) {
             for (State b : State.values()) {
                 if (b.name()
@@ -43,7 +48,7 @@ public abstract class Operation implements AuditableConfiguration {
                     return b;
                 }
             }
-            return null;
+            throw new IllegalArgumentException(MessageFormat.format("Operation state \"{0}\"is not valid", v));
         }
 
         public static List<State> getNonFinalStates() {
@@ -90,7 +95,7 @@ public abstract class Operation implements AuditableConfiguration {
     @JsonProperty("acquiredLock")
     public abstract Boolean hasAcquiredLock();
 
-    @Nullable
+    @Nullable // TODO remove on next takt
     public abstract State getState();
 
     @Nullable

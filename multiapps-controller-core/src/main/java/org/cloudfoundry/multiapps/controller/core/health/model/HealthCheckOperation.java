@@ -43,7 +43,6 @@ public interface HealthCheckOperation {
         return 0;
     }
 
-    @Nullable
     Operation.State getState();
 
     @Nullable

@@ -29,7 +29,7 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
         public static final String NAMESPACE = "namespace";
         public static final String USER = "user";
         public static final String ACQUIRED_LOCK = "acquiredLock";
-        public static final String FINAL_STATE = "finalState";
+        public static final String CURRENT_STATE = "currentState";
 
     }
 
@@ -63,15 +63,15 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
     @Column(name = "acquired_lock")
     private boolean acquiredLock;
 
-    @Column(name = "final_state")
-    private String finalState;
+    @Column(name = "current_state")
+    private String currentState;
 
     protected OperationDto() {
         // Required by JPA
     }
 
     private OperationDto(String processId, String processType, Date startedAt, Date endedAt, String spaceId, String mtaId, String namespace, String user,
-                         boolean acquiredLock, String finalState) {
+                         boolean acquiredLock, String currentState) {
         this.processId = processId;
         this.processType = processType;
         this.startedAt = startedAt;
@@ -81,7 +81,7 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
         this.namespace = namespace;
         this.user = user;
         this.acquiredLock = acquiredLock;
-        this.finalState = finalState;
+        this.currentState = currentState;
     }
 
     @Override
@@ -130,8 +130,8 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
         return acquiredLock;
     }
 
-    public String getFinalState() {
-        return finalState;
+    public String getCurrentState() {
+        return currentState;
     }
 
     public static Builder builder() {
@@ -149,7 +149,7 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
         private String namespace;
         private String user;
         private boolean acquiredLock;
-        private String finalState;
+        private String currentState;
 
         public Builder processId(String processId) {
             this.processId = processId;
@@ -196,13 +196,13 @@ public class OperationDto implements DtoWithPrimaryKey<String> {
             return this;
         }
 
-        public Builder finalState(String state) {
-            this.finalState = state;
+        public Builder currentState(String state) {
+            this.currentState = state;
             return this;
         }
 
         public OperationDto build() {
-            return new OperationDto(processId, processType, startedAt, endedAt, spaceId, mtaId, namespace, user, acquiredLock, finalState);
+            return new OperationDto(processId, processType, startedAt, endedAt, spaceId, mtaId, namespace, user, acquiredLock, currentState);
         }
     }
 }

@@ -194,8 +194,7 @@ public class OperationsApiServiceImpl implements OperationsApiService {
         if (!states.isEmpty() && containsOnlyFinishedStates(states)) {
             operationQuery.withStateAnyOf(states);
         }
-        List<Operation> operations = operationQuery.list();
-        return operationsHelper.findOperations(operations, states);
+        return operationQuery.list();
     }
 
     private boolean containsOnlyFinishedStates(List<Operation.State> statusList) {
@@ -214,7 +213,6 @@ public class OperationsApiServiceImpl implements OperationsApiService {
             Operation operation = operationService.createQuery()
                                                   .processId(operationId)
                                                   .singleResult();
-            operation = operationsHelper.addState(operation);
             operation = operationsHelper.addErrorType(operation);
             return operation;
         } catch (NoResultException e) {

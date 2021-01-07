@@ -26,10 +26,12 @@ class OperationServiceTest {
 
     private static final Operation OPERATION_1 = createOperation("1", ProcessType.DEPLOY, "spaceId", "mtaId", "user", false,
                                                                  ZonedDateTime.parse("2010-10-08T10:00:00.000Z[UTC]"),
-                                                                 ZonedDateTime.parse("2010-10-14T10:00:00.000Z[UTC]"));
+                                                                 ZonedDateTime.parse("2010-10-14T10:00:00.000Z[UTC]"),
+                                                                 Operation.State.FINISHED);
     private static final Operation OPERATION_2 = createOperation("2", ProcessType.UNDEPLOY, "spaceId1", "mtaId1", "user1", true,
                                                                  ZonedDateTime.parse("2010-10-10T10:00:00.000Z[UTC]"),
-                                                                 ZonedDateTime.parse("2010-10-12T10:00:00.000Z[UTC]"));
+                                                                 ZonedDateTime.parse("2010-10-12T10:00:00.000Z[UTC]"),
+                                                                 Operation.State.FINISHED);
     private final OperationService operationService = createOperationService();
 
     @AfterEach
@@ -130,16 +132,16 @@ class OperationServiceTest {
 
     @Test
     void testQueryInNonFinalState() {
-        Operation operation2 = ImmutableOperation.copyOf(OPERATION_2)
-                                                 .withState(Operation.State.ABORTED);
-        testQueryByCriteria((query, operation) -> query.inNonFinalState(), OPERATION_1, operation2);
+        Operation operation1 = ImmutableOperation.copyOf(OPERATION_1)
+                                                 .withState(Operation.State.RUNNING);
+        testQueryByCriteria((query, operation) -> query.inNonFinalState(), operation1, OPERATION_2);
     }
 
     @Test
     void testQueryInFinalState() {
-        Operation operation1 = ImmutableOperation.copyOf(OPERATION_1)
-                                                 .withState(Operation.State.FINISHED);
-        testQueryByCriteria((query, operation) -> query.inFinalState(), operation1, OPERATION_2);
+        Operation operation2 = ImmutableOperation.copyOf(OPERATION_2)
+                                                 .withState(Operation.State.RUNNING);
+        testQueryByCriteria((query, operation) -> query.inFinalState(), OPERATION_1, operation2);
     }
 
     private void testQueryByCriteria(OperationQueryBuilder operationQueryBuilder, Operation operation1, Operation operation2) {
@@ -169,7 +171,7 @@ class OperationServiceTest {
     }
 
     private static Operation createOperation(String processId, ProcessType type, String spaceId, String mtaId, String user,
-                                             boolean acquiredLock, ZonedDateTime startedAt, ZonedDateTime endedAt) {
+                                             boolean acquiredLock, ZonedDateTime startedAt, ZonedDateTime endedAt, Operation.State state) {
         return ImmutableOperation.builder()
                                  .processId(processId)
                                  .processType(type)
@@ -179,6 +181,7 @@ class OperationServiceTest {
                                  .hasAcquiredLock(acquiredLock)
                                  .startedAt(startedAt)
                                  .endedAt(endedAt)
+                                 .state(state)
                                  .build();
     }
 

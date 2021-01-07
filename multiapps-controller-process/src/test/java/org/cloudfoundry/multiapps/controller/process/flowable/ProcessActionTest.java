@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.cloudfoundry.multiapps.controller.core.cf.CloudControllerClientProvider;
+import org.cloudfoundry.multiapps.controller.persistence.services.OperationService;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.RuntimeService;
@@ -39,6 +40,8 @@ abstract class ProcessActionTest {
     private HistoryService historyService;
     @Mock
     private RuntimeService runtimeService;
+    @Mock
+    protected OperationService operationService;
 
     @BeforeEach
     void initMocks() throws Exception {

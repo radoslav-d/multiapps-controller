@@ -51,7 +51,8 @@ class RetryProcessActionTest extends ProcessActionTest {
                                       List.of(new RetryProcessAdditionalAction(flowableFacade, progressMessageService),
                                               new SetRetryPhaseAdditionalProcessAction(flowableFacade)),
                                       historicOperationEventService,
-                                      cloudControllerClientProvider);
+                                      cloudControllerClientProvider,
+                                      operationService);
     }
 
 }

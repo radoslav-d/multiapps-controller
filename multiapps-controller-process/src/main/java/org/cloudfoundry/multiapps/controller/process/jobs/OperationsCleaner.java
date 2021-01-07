@@ -85,7 +85,8 @@ public class OperationsCleaner implements Cleaner {
     }
 
     private boolean inFinalState(Operation operation) {
-        return operation.getState() != null;
+        return operation.getState()
+                        .isFinal();
     }
 
     private boolean abortSafely(Operation operation) {

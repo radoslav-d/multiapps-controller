@@ -64,7 +64,7 @@ public class OperationService extends PersistenceService<Operation, OperationDto
                                      .namespace(dto.getNamespace())
                                      .user(dto.getUser())
                                      .hasAcquiredLock(dto.hasAcquiredLock())
-                                     .state(toState(dto.getFinalState()))
+                                     .state(toState(dto.getCurrentState()))
                                      .build();
         }
 
@@ -73,7 +73,7 @@ public class OperationService extends PersistenceService<Operation, OperationDto
         }
 
         private Operation.State toState(String operationState) {
-            return operationState == null ? null : Operation.State.valueOf(operationState);
+            return Operation.State.fromValue(operationState);
         }
 
         private ZonedDateTime toZonedDateTime(Date date) {
@@ -90,7 +90,8 @@ public class OperationService extends PersistenceService<Operation, OperationDto
             String mtaId = operation.getMtaId();
             String namespace = operation.getNamespace();
             String user = operation.getUser();
-            String state = toString(operation.getState());
+            String state = operation.getState()
+                                    .toString();
             boolean acquiredLock = operation.hasAcquiredLock();
             return OperationDto.builder()
                                .processId(processId)
@@ -102,7 +103,7 @@ public class OperationService extends PersistenceService<Operation, OperationDto
                                .namespace(namespace)
                                .user(user)
                                .acquiredLock(acquiredLock)
-                               .finalState(state)
+                               .currentState(state)
                                .build();
         }
 
@@ -114,10 +115,6 @@ public class OperationService extends PersistenceService<Operation, OperationDto
 
         private String toString(ProcessType processType) {
             return processType == null ? null : processType.toString();
-        }
-
-        private String toString(Operation.State operationState) {
-            return operationState == null ? null : operationState.toString();
         }
 
     }

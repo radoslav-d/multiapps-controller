@@ -361,15 +361,15 @@ class OperationsApiServiceImplTest {
 
     @SuppressWarnings("unchecked")
     private void setupOperationsHelperMock() {
-        Mockito.when(operationsHelper.findOperations(Mockito.any(), Mockito.anyList()))
-               .thenAnswer((Answer<List<Operation>>) invocation -> {
-                   List<Operation.State> states = (List<Operation.State>) invocation.getArguments()[1];
-                   return operations.stream()
-                                    .filter(operation -> states.contains(operation.getState()))
-                                    .collect(Collectors.toList());
-               });
-        Mockito.when(operationsHelper.addState(Mockito.any()))
-               .thenAnswer(invocation -> invocation.getArgument(0));
+//        Mockito.when(operationsHelper.findOperations(Mockito.any(), Mockito.anyList()))
+//               .thenAnswer((Answer<List<Operation>>) invocation -> {
+//                   List<Operation.State> states = (List<Operation.State>) invocation.getArguments()[1];
+//                   return operations.stream()
+//                                    .filter(operation -> states.contains(operation.getState()))
+//                                    .collect(Collectors.toList());
+//               });
+//        Mockito.when(operationsHelper.addState(Mockito.any()))
+//               .thenAnswer(invocation -> invocation.getArgument(0));
         Mockito.when(operationsHelper.addErrorType(Mockito.any()))
                .thenAnswer(invocation -> invocation.getArgument(0));
     }
